@@ -1,5 +1,5 @@
 {
-  "name": "project-1-todo-app",
+  "name": "project-2-weatherapp",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,9 +11,7 @@
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-icon": "^1.0.0",
-    "react-toastify": "^10.0.6"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
