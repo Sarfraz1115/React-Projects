@@ -8,32 +8,6 @@ function App() {
   const [winner, setwinner] = useState(null);
 
 
-  const isboardFull = (board) => {
-    return board.every(square => square != null);
-  }
-
-  const handleclick = (index) => {
-    // Add your logic here to update the game state and check for win conditions
-    if (board[index] != null) {
-      return;  // game is already over
-    }
-
-    const myboard = [...board];
-    myboard[index] = isxturn ? "X" : "O";
-    setboard(myboard);
-    setisxturn(!isxturn);
-    const checkwinner = winnercheck(myboard);
-
-    if (isboardFull(myboard)) {
-      setwinner();
-      return;  // game is over, no winner
-    }
-    if (checkwinner) {
-      setwinner("winner " + myboard[checkwinner[0]]);
-    }
-  }
-
-
   const winnercheck = () => {
     const combinations = [
       [0, 1, 2],
@@ -55,10 +29,44 @@ function App() {
     return null;
   }
 
+
+  const isboardFull = (board) => {
+    return board.every(square => square != null);
+  }
+
+  const handleclick = (index) => {
+    // Add your logic here to update the game state and check for win conditions
+    if (board[index] != null) {
+      return;  // game is already over
+    }
+
+    const myboard = [...board];
+    myboard[index] = isxturn ? "X" : "O";
+
+    const checkwinner = winnercheck(myboard);
+    if (checkwinner) {
+      setboard(myboard);
+      setwinner("winner " + myboard[checkwinner[0]]);
+      return;
+    }
+
+    
+    if (isboardFull(myboard)) {
+      setwinner();
+      return;  // game is over, no winner
+    }
+    
+    setboard(myboard);
+    setisxturn(!isxturn);
+  }
+
+
+  
+
   const rendrevalue = (index) => {
     return (
       <button onClick={() => handleclick(index)}
-        className="w-16 h-16 text-2xl rounded-2xl border-solid border-2 border-sky-500 m-1 font-bold "
+        className="w-16 h-16 text-2xl rounded-2xl border-solid border-2 border-sky-500 m-1 font-bold focus:outline-none focus:border-sky-500"
       >{board[index]}</button>
     )
   }
@@ -71,36 +79,30 @@ function App() {
 
 
   return (
-    <>
-      <h1 className="heading text-2xl font-bold justify-center flex">Tic Tac Toe</h1>
 
+    <div className="min-h-screen flex flex-col justify-center items-center border-4 p-4">
+      <h1 className="text-3xl font-bold mb-4">Tic Tac Toe</h1>
 
-      <div className="main flex justify-center items-center ">
-        <div className="board  justify-center ">
-          <div className="firstrow">
-            {rendrevalue(0)}
-            {rendrevalue(1)}
-            {rendrevalue(2)}
-          </div>
-          <div className="secondRow">
-            {rendrevalue(3)}
-            {rendrevalue(4)}
-            {rendrevalue(5)}
-          </div>
-          <div className="Thirdrow">
-            {rendrevalue(6)}
-            {rendrevalue(7)}
-            {rendrevalue(8)}
-          </div>
-        </div>
+      {/* Game Board */}
+      <div className="grid grid-cols-3 gap-2">
+        {board.map((_, index) => rendrevalue(index))}
       </div>
-      <button onClick={reset} className="font-bold text-2xl block m-auto mt-8 rounded-2xl border-solid border-2 border-black w-36">Restart</button>
-      <div className="text-2xl font-bold text-center mt-8">{winner ? "The winner is " + winner : ""}</div>
-      <div className="text-2xl font-bold text-center mt-8">{isboardFull(board) ? "The Game is Tie " : ""}</div>
 
+      {/* Restart Button */}
+      <button
+        onClick={reset}
+        className="mt-8 px-6 py-2 text-2xl font-bold border-2 border-black rounded-2xl"
+      >
+        Restart
+      </button>
 
-
-    </>
+      {/* Result Display */}
+      {winner && (
+        <div className="text-2xl font-bold mt-4 text-center text-green-600">
+          {winner}
+        </div>
+      )}
+    </div>
   )
 }
 
