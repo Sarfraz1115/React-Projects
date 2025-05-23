@@ -50,18 +50,19 @@ function App() {
       return;
     }
 
-    
+
     if (isboardFull(myboard)) {
-      setwinner();
+      setboard(myboard);
+      setwinner("It's a Tie!");
       return;  // game is over, no winner
     }
-    
+
     setboard(myboard);
     setisxturn(!isxturn);
   }
 
 
-  
+
 
   const rendrevalue = (index) => {
     return (
