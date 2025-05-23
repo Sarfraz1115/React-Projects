@@ -8,7 +8,7 @@ function App() {
   const [winner, setwinner] = useState(null);
 
 
-  const winnercheck = () => {
+  const winnercheck = (currentBoard) => {
     const combinations = [
       [0, 1, 2],
       [0, 3, 6],
@@ -18,20 +18,22 @@ function App() {
       [2, 5, 8],
       [3, 4, 5],
       [6, 7, 8],
+    ];
 
-    ]
     for (let i = 0; i < combinations.length; i++) {
       const [a, b, c] = combinations[i];
-      if (board[a] && board[a] == board[b] && board[b] == board[c]) {
-        return combinations[i];
+      if (currentBoard[a] && 
+        currentBoard[a] === currentBoard[b] && 
+        currentBoard[b] === currentBoard[c]) {
+        return currentBoard[a];
       }
     }
     return null;
-  }
+  };
 
 
-  const isboardFull = (board) => {
-    return board.every(square => square != null);
+  const isboardFull = (currentBoard) => {
+    return currentBoard.every((square) => square != null);
   }
 
   const handleclick = (index) => {
@@ -40,24 +42,24 @@ function App() {
       return;  // game is already over
     }
 
-    const myboard = [...board];
-    myboard[index] = isxturn ? "X" : "O";
+    const newBoard = [...board];
+    newBoard[index] = isxturn ? "X" : "O";
 
-    const checkwinner = winnercheck(myboard);
-    if (checkwinner) {
-      setboard(myboard);
-      setwinner("winner " + myboard[checkwinner[0]]);
+    const winnerresult = winnercheck(newBoard);
+    if (winnerresult) {
+      setboard(newBoard);
+      setwinner("winner " + winnerresult);
       return;
     }
 
 
-    if (isboardFull(myboard)) {
-      setboard(myboard);
+    if (isboardFull(newBoard)) {
+      setboard(newBoard);
       setwinner("It's a Tie!");
       return;  // game is over, no winner
     }
 
-    setboard(myboard);
+    setboard(newBoard);
     setisxturn(!isxturn);
   }
 
@@ -108,3 +110,8 @@ function App() {
 }
 
 export default App
+
+
+
+
+
